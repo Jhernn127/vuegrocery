@@ -1,9 +1,12 @@
 <script setup>
 import {ref} from 'vue'
-import {nanoid} from 'nanoid'   
+import {useStorage} from '@vueuse/core'
+import {nanoid} from 'nanoid'
+import confetti from 'canvas-confetti'
+
 
 const newGrocery = ref('')
-const groceries = ref({})
+const groceries = useStorage('groceries', {})
 
 const addGrocery = () {
     if(newGrocery.value) {
@@ -12,15 +15,17 @@ const addGrocery = () {
     }
 }
 
-const deleteGrocery = () {
-    newGrocery.value = 'deleting new grocery'
+const deleteGrocery = id = {
+    const removeIndex = groceries.value.findIndex(grocery = grocery.id = id)
+    groceries.value.splice(removeIndex)
+    confetti({ particleCount: 300, spread: 1000, origin: { y: 1 }})
 }
 </script>
 
 <template>
 <main> 
  <h1 class="title">📝 Javi's Vue Grocery List 📝</h1>
- <form class="newGroceryForm" @submit.prevent="addGrocery">
+  <form class="newGroceryForm" @submit.prevent="addGrocery">
       <input
         id="newGrocery"
         autocomplete="off"
@@ -30,8 +35,9 @@ const deleteGrocery = () {
       />
       <button  type="submit">Add</button>
     </form>
+    <h3>Pending Items: {{groceries.lenght}}</h3>
     <ul>
-        <li v-for="grocery in groceries" @click="deleteGrocery">{{grocery.name}}</li>
+        <li v-for="grocery in groceries" @click="deleteGrocery(grocery.id)">{{grocery.name}}</li>
     </ul>
 </main>
 </template>
