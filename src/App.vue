@@ -1,8 +1,19 @@
 <script setup>
 import {ref} from 'vue'
-const newGrocery = ref('Apple')
+import {nanoid} from 'nanoid'   
+
+const newGrocery = ref('')
+const groceries = ref({})
+
 const addGrocery = () {
-    newGrocery.value = 'adding new grocery'
+    if(newGrocery.value) {
+        groceries.value.push({id: nanoid(), name: newGrocery.value})
+        newGrocery.value = ''
+    }
+}
+
+const deleteGrocery = () {
+    newGrocery.value = 'deleting new grocery'
 }
 </script>
 
@@ -20,7 +31,7 @@ const addGrocery = () {
       <button  type="submit">Add</button>
     </form>
     <ul>
-        <li click="remove">{{newGrocery}}</li>
+        <li v-for="grocery in groceries" @click="deleteGrocery">{{grocery.name}}</li>
     </ul>
 </main>
 </template>
