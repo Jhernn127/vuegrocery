@@ -1,19 +1,26 @@
-<script setup></script>
+<script setup>
+import {ref} from 'vue'
+const newGrocery = ref('Apple')
+const addGrocery = () {
+    newGrocery.value = 'adding new grocery'
+}
+</script>
 
 <template>
 <main> 
  <h1 class="title">📝 Javi's Vue Grocery List 📝</h1>
- <form class="newGroceryForm">
+ <form class="newGroceryForm" @submit.prevent="addGrocery">
       <input
         id="newGrocery"
         autocomplete="off"
         type="text"
         placeholder="Add an item to your list"
+        v-model="newGrocery"
       />
-      <button id="addBtn" type="submit">Add</button>
+      <button  type="submit">Add</button>
     </form>
     <ul>
-        <li>Tortilla</li>
+        <li click="remove">{{newGrocery}}</li>
     </ul>
 </main>
 </template>
